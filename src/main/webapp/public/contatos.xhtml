@@ -1,0 +1,237 @@
+<ui:composition template="/WEB-INF/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+	<ui:define name="title-page">
+		Pesquisar Contatos
+	</ui:define>
+
+	<ui:define name="button">
+		<h:form>
+			<p:commandButton title="Cadastrar usuário" value="Cadastrar"
+				oncomplete="PF('dlg').show()" icon="fa fa-fw fa-plus-square"
+				update="frm-dialogo" action="#{contatoController.limpar()}"
+				styleClass="pb-button">
+			</p:commandButton>
+			<br />
+		</h:form>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="frm">
+
+			<p:spacer height="10" />
+			<p:messages id="msg" closable="true" />
+
+			<div jsf:id="panel-filter" class="ui-fluid ui-g">
+
+				<div class="ui-g-3 ui-md-2 ui-lg-3">
+					<label class="myLabel">Nome</label>
+					<p:inputText value="#{contatoController.filter.nome}"
+						id="filter-nome" />
+				</div>
+
+				<div class="ui-g-3 ui-md-2 ui-lg-3">
+					<label class="myLabel">Sobrenome</label>
+					<p:inputText value="#{contatoController.filter.sobrenome}"
+						id="filter-email" />
+				</div>
+
+				<h:panelGroup rendered="#{sessaoController.hasRoleAdministrador()}">
+					<div class="ui-g-3 ui-md-2 ui-lg-3">
+						<label>Usuário</label> <br />
+						<p:selectOneMenu value="#{contatoController.filter.criador}"
+							id="filter-usuario" converter="usuarioConverter" autoWidth="true">
+							<f:selectItem itemLabel="Selecione um usuário"
+								noSelectionOption="false" />
+							<f:selectItems value="#{contatoController.usuarios}"
+								var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario}" />
+						</p:selectOneMenu>
+					</div>
+				</h:panelGroup>
+
+				<div class="ui-g-12 ui-md-3 ui-lg-2">
+					<p:commandButton value="Pesquisar" id="search"
+						style="margin-top: 15px;"
+						action="#{contatoController.pesquisar()}" icon="fa fa-search"
+						styleClass="btn-blue btn-panel-filter"
+						process="@this panel-filter" update="frm:contatos-table frm:msg" />
+				</div>
+				<p:defaultCommand target="search" />
+			</div>
+
+			<br />
+
+			<p:dataTable value="#{contatoController.contatos}" var="contato"
+				id="contatos-table" lazy="true" rows="25" reflow="true"
+				paginatorAlwaysVisible="false" paginator="true"
+				paginatorPosition="bottom" emptyMessage="Nenhum contato encontrado!"
+				class="table resp">
+
+				<p:column id="nome" headerText="Nome" width="200"
+					styleClass="centralizado">
+					<h:outputText value="#{contato.nome}" />
+				</p:column>
+
+				<p:column id="sobrenome" headerText="Sobrenome" width="200"
+					styleClass="centralizado">
+					<h:outputText value="#{contato.sobrenome}" />
+				</p:column>
+
+				<p:column id="telefones" headerText="Telefone(s)" width="500"
+					styleClass="centralizado">
+					<h:outputText value="#{contato.telefones}" />
+				</p:column>
+
+				<p:column id="criador" headerText="Usuário Criador"
+					rendered="#{sessaoController.hasRoleAdministrador()}"
+					styleClass="centralizado">
+					<h:outputText value="#{contato.criador.nome}" />
+				</p:column>
+
+				<p:column headerText="Ações" width="60" styleClass="centralizado"
+					rendered="#{sessaoController.hasRoleUsuarios()}" exportable="false">
+					<p:commandLink title="Editar #{contato.nome}" process="@this"
+						oncomplete="PF('dlg').show();" update="frm-dialogo">
+						<i class="fa fa-fw fa-pencil" />
+						<f:setPropertyActionListener value="#{contato}"
+							target="#{contatoController.selecionado}" />
+					</p:commandLink>
+
+					<p:spacer width="4" />
+
+					<p:commandLink title="Deletar #{contato.nome}" process="@this"
+						action="#{contatoController.deletar()}"
+						update="frm:contatos-table frm:msg">
+						<i class="fa fa-fw fa-trash" />
+						<p:confirm header="Confirmação"
+							message="Tem certeza que deseja excluir o #{contato.nome}?"
+							icon="pi pi-exclamation-triangle" />
+						<f:setPropertyActionListener value="#{contato}"
+							target="#{contatoController.selecionado}" />
+					</p:commandLink>
+				</p:column>
+
+				<f:facet name="footer">
+					<center>
+						<h:panelGroup
+							rendered="#{sessaoController.hasRoleAdministradoresOuUsuarios()}">
+							<h:commandLink update="frm:msg" title="Gerar PDF"
+								action="#{contatoController.gerarPDF()}" ajax="false">
+								<p:graphicImage name="/image/pdf-logo.png" width="30" />
+							</h:commandLink>
+						</h:panelGroup>
+
+						<p:spacer width="15" />
+
+						<h:panelGroup
+							rendered="#{sessaoController.hasRoleAdministradoresOuUsuarios()}">
+							<h:commandLink title="Exportar XLSX (Tabela)">
+								<p:graphicImage name="/image/excel-logo.png" width="30" />
+								<p:dataExporter type="xlsx" target="contatos-table"
+									options="#{contatoController.customizationOptions}"
+									fileName="meusContatos" preProcessor="false" />
+							</h:commandLink>
+						</h:panelGroup>
+					</center>
+
+				</f:facet>
+
+			</p:dataTable>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+
+				<center>
+					<p:commandButton value="Sim" type="button"
+						style="background-color:#207245; border-color: #207245"
+						styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="Não" type="button"
+						style="background-color:#c30c15; border-color: #c30c15"
+						styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+				</center>
+			</p:confirmDialog>
+
+		</h:form>
+
+		<h:form id="frm-dialogo">
+			<p:dialog widgetVar="dlg" id="dialogo"
+				header="#{contatoController.selecionado.novo ? 'Cadastrar' : 'Editar'} contato"
+				resizable="false" showEffect="clip">
+
+				<div jsf:id="panel-cad" class="ui-fluid ui-g">
+
+					<div class="ui-g-12 ui-md-12 ui-lg-12">
+						<div class="ui-g-9 ui-md-2 ui-lg-9">
+
+							<p:outputLabel value="Nome: " for="nome-dialog" />
+							<p:inputText value="#{contatoController.selecionado.nome}"
+								id="nome-dialog" styleClass="form-control" required="true"
+								requiredMessage="Campo 'nome' obrigatório" />
+
+						</div>
+
+						<div class="ui-g-9 ui-md-2 ui-lg-9">
+							<p:outputLabel value="Sobrenome: " for="sobrenome-dialog" />
+							<p:inputText value="#{contatoController.selecionado.sobrenome}"
+								id="sobrenome-dialog" styleClass="form-control" required="true"
+								requiredMessage="Campo 'sobrenome' obrigatório" />
+						</div>
+
+						<div class="ui-g-9 ui-md-2 ui-lg-9">
+							<p:outputLabel value="Telefone(s): " for="telefone-dialog">
+								<i class="fa fa-fw fa-question-circle"
+									style="font-size: 13px; color: #0288D1;"
+									title="Caso queira adicionar mais de um número, basta apenas pressionar a tecla 'ENTER'" />
+							</p:outputLabel>
+							<p:chips id="telefone-dialog" placeholder="Ex: (99)9-9999.99999"
+								value="#{contatoController.selecionado.telefones}" />
+						</div>
+
+						<h:panelGroup
+							rendered="#{sessaoController.hasRoleAdministrador()}">
+							<div class="ui-g-9 ui-md-2 ui-lg-9">
+								<label>Usuário</label> <br />
+								<p:selectOneMenu
+									value="#{contatoController.selecionado.criador}"
+									id="usuario-dialog" converter="usuarioConverter"
+									autoWidth="true">
+									<f:selectItem itemLabel="Selecione um usuário"
+										noSelectionOption="false" />
+									<f:selectItems value="#{contatoController.usuarios}"
+										var="usuario" itemLabel="#{usuario.nome}"
+										itemValue="#{usuario}" />
+								</p:selectOneMenu>
+							</div>
+						</h:panelGroup>
+					</div>
+				</div>
+
+				<div class="panel-footer">
+					<p:commandButton value="Salvar"
+						action="#{contatoController.salvar}" styleClass="button-blue"
+						icon="fa fa-save" update="frm frm-dialogo"
+						oncomplete="if (!args.validationFailed) PF('dlg').hide()"
+						rendered="#{contatoController.selecionado.novo}" />
+
+					<p:commandButton styleClass="button-blue" value="Atualizar"
+						rendered="#{contatoController.selecionado.cadastrado}"
+						icon="fa fa-floppy-o" action="#{contatoController.atualizar}"
+						style="background-color:#207245; border-color: #207245"
+						oncomplete="PF('dlg').hide();" update="frm frm-dialogo" />
+
+					<p:spacer width="5px" />
+
+					<p:commandButton value="Cancelar" oncomplete="PF('dlg').hide();"
+						action="#{contatoController.limpar()}" icon="fa fa-ban"
+						style="background-color:#c30c15; border-color: #c30c15"
+						update="frm-dialogo" />
+				</div>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

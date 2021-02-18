@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</f:facet>
+
+	<title><ui:insert name="title-page" /></title>
+
+	<h:outputStylesheet library="css" name="layout.css" />
+	<h:outputStylesheet library="css" name="components.css" />
+
+	<h:outputScript target="body" library="primefaces"
+		name="jquery/jquery.js" />
+	<h:outputScript target="body" library="script" name="scripts.js" />
+	<h:outputScript target="body" library="script" name="menu.js" />
+
+</h:head>
+
+<h:body>
+
+	<header class="pb-topbar">
+		<h:graphicImage library="image" name="phonebook-white.png" />
+
+		<p:outputLabel value="#{sessaoController.usuarioLogado.nome}"
+			styleClass="pb-user-name" />
+
+		<a href="#" class="pb-toggle js-toggle"> <i class="fa fa-bars"></i>
+		</a>
+	</header>
+
+	<aside class="pb-sidebar js-sidebar">
+		<ui:include src="/WEB-INF/template/menu.xhtml" />
+	</aside>
+
+	<section class="pb-content js-content">
+		<ui:insert name="button" />
+		<ui:insert name="content" />
+	</section>
+
+</h:body>
+</html>

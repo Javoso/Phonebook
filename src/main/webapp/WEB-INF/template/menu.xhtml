@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<f:facet name="first">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</f:facet>
+
+	<title><ui:insert name="title-page" /></title>
+
+	<h:outputStylesheet library="css" name="custom.css" />
+	<h:outputStylesheet library="css" name="components.css" />
+</h:head>
+
+<h:body>
+
+	<nav class="pb-menu">
+		<ul class="sidebar-menu" data-widget="tree">
+			
+			<li>
+				<p:link href="../private/dashboard.xhtml" rendered="#{sessaoController.hasRoleAdministrador()}">
+					<i class="fa fa-fw fa-dashboard" />
+					<span>Dashboard</span>
+				</p:link>
+			</li>
+			
+			<li>
+				<p:link href="../public/contatos.xhtml" rendered="#{sessaoController.hasRoleAdministradoresOuUsuarios()}">
+					<i class="fa fa-fw fa-address-book-o" />
+					<span>Contatos</span>
+				</p:link>
+			</li>
+			<li>
+				<p:link href="../private/usuarios.xhtml" rendered="#{sessaoController.hasRoleAdministrador()}">
+					<i class="fa  fa-fw  fa-users" />
+					<span>Usuários</span>
+				</p:link>
+			</li>
+			<li>
+				<p:link href="../logout" rendered="#{sessaoController.hasRoleAdministradoresOuUsuarios()}">
+					<i class="fa  fa-fw fa-sign-out" />
+					<span>Sair</span>
+				</p:link>
+			</li>
+		</ul>
+	</nav>
+
+</h:body>
+
+</html>

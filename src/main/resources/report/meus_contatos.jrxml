@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="baixas_por_setor_novo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cf52248c-fd49-4ae3-ac3b-310ac3a3642c">
+	<property name="ireport.zoom" value="1.0263162364614138"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="zebrado">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) != 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#E8E8E8"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="logo" class="java.lang.Object"/>
+	<parameter name="logorodape" class="java.lang.Object"/>
+	<parameter name="usuarioNome" class="java.lang.String"/>
+	<parameter name="quantidade" class="java.lang.Integer"/>
+	<parameter name="contatoNome" class="java.lang.String"/>
+	<parameter name="contatoSobrenome" class="java.lang.String"/>
+	<parameter name="contatoTelefones" class="java.util.List"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="sobrenome" class="java.lang.String"/>
+	<field name="telefones" class="java.util.List"/>
+	<group name="contatos">
+		<groupHeader>
+			<band height="19"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="47">
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="0" y="12" width="555" height="25" uuid="3c5428a6-dc2c-486c-93ad-3a76a836298d"/>
+					<box rightPadding="5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total de Contatos: " + $P{quantidade}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="header_group">
+		<groupHeader>
+			<band height="41" splitType="Prevent">
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="1" y="21" width="166" height="20" isPrintWhenDetailOverflows="true" backcolor="#BBBBBB" uuid="ae560951-fa00-41bd-9876-8840268eb799"/>
+					<box leftPadding="5"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nome]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="334" y="21" width="218" height="20" isPrintWhenDetailOverflows="true" backcolor="#BBBBBB" uuid="ec86c878-348b-4e32-a7dd-07c062a022bc"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Telefone]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="166" y="21" width="168" height="20" isPrintWhenDetailOverflows="true" backcolor="#BBBBBB" uuid="ddd88615-a424-4d70-a123-a8375e1258ab"/>
+					<box leftPadding="5"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sobrenome]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="29"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<staticText>
+				<reportElement x="467" y="34" width="36" height="12" uuid="5e456b6f-0060-4e63-9da4-f6e77a700c15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<line direction="BottomUp">
+				<reportElement x="461" y="11" width="1" height="60" uuid="7e1a5df9-7fda-42d8-9d9e-0a251c8fa356"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="124" y="11" width="1" height="60" uuid="42155e8b-e1d2-41c8-bf00-bcd12740cdb2"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="454" y="19" width="36" height="12" uuid="de1a9100-a617-4a3f-a99f-146734d5ab5a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement x="494" y="34" width="58" height="13" uuid="25768ad1-44d8-4048-9caf-806a42bc5dac"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="454" y="34" width="36" height="12" uuid="04daf6a5-29b5-4ea8-84e0-3c80dad4771c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="2" y="10" width="555" height="61" uuid="2f59192f-be4e-403f-9803-1edd74673762"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<line direction="BottomUp">
+				<reportElement x="129" y="10" width="1" height="60" uuid="2612cee1-b43d-4861-b893-f981b42c9ca7"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="497" y="18" width="58" height="13" uuid="e576d9b4-41a3-4bf2-bba4-2e5c8e02cb5d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="496" y="35" width="58" height="13" uuid="ff89bdc1-3478-4ca0-bc85-7d200a2f4522"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement x="451" y="10" width="1" height="60" uuid="3c54bb40-cbda-4fb0-91e3-2205dd447775"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="457" y="36" width="36" height="12" uuid="0ab1411c-5cb3-4941-a603-7024a0568a15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="23" width="123" height="29" uuid="5fc95d19-14ca-4544-8b1c-3763bfa292d8"/>
+				<textElement>
+					<font fontName="SansSerif" size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PhoneBook]]></text>
+			</staticText>
+			<image hAlign="Left">
+				<reportElement x="8" y="22" width="115" height="40" uuid="cd7e5ee2-4b0b-487a-b616-8389d7b855e4"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="457" y="19" width="36" height="12" uuid="f2d6ec72-dbf7-4525-b5d5-52e520db74fe"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="110" y="100" width="227" height="24" uuid="66ec744b-6627-4d8e-916d-7d35d947d235"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Agenda de Contatos do(a)  ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="313" y="100" width="170" height="25" isPrintWhenDetailOverflows="true" uuid="2ef2ea7c-9284-408e-b58d-5c77b34d0784"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuarioNome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="zebrado" stretchType="RelativeToBandHeight" mode="Opaque" x="1" y="0" width="166" height="22" isPrintWhenDetailOverflows="true" uuid="1800d4c9-6ef6-482e-aebb-ec3d8288c9d2"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="zebrado" stretchType="RelativeToBandHeight" mode="Opaque" x="333" y="0" width="218" height="22" isPrintWhenDetailOverflows="true" uuid="db7e581b-e8a9-430e-bf1c-76cf5f0f3e44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA[$F{telefones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="zebrado" stretchType="RelativeToBandHeight" mode="Opaque" x="166" y="0" width="168" height="22" isPrintWhenDetailOverflows="true" uuid="0a31ed25-8186-4338-a8e2-4efc3abadd20"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA[$F{sobrenome}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<staticText>
+				<reportElement mode="Opaque" x="1" y="0" width="555" height="30" forecolor="#FFFFFF" backcolor="#807DA8" uuid="01a5f529-1da7-4948-9655-acee7d0fcd25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[	PhoneBook - Sistema de cadastro de contatos]]></text>
+			</staticText>
+			<image hAlign="Left" isUsingCache="true">
+				<reportElement x="2" y="0" width="133" height="30" uuid="1e4e07fe-5da1-4d3e-a975-3c706c8e8c41"/>
+				<imageExpression><![CDATA[$P{logorodape}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>
